@@ -39,9 +39,11 @@ class RoleSeeder extends Seeder
         Role::create(['role' => 'student.show']);
         Role::create(['role' => 'student.index']);
         Role::create(['role' => 'student.destroy']);
-        Role::create(['role' => 'booking.index']);
-        Role::create(['role' => 'booking.update']);
-        Role::create(['role' => 'booking.destroy']);
+        Role::create(['role' => 'subscription.index']);
+        Role::create(['role' => 'subscription.update']);
+        Role::create(['role' => 'subscription.destroy']);
+        Role::create(['role' => 'subscription.show']);
+        Role::create(['role' => 'subscription.store']);
 
     }
 }

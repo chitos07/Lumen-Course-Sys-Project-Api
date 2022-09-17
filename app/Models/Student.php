@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -45,4 +46,11 @@ class Student extends Model implements AuthenticatableContract, AuthorizableCont
     {
         return [];
     }
+
+    public function subscriptions(){
+
+        return DB::select('select * from subscriptions where student_name = ?',[$this->username]);
+    }
+
+
 }

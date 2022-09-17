@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address',50);
             $table->double('salary',15);
             $table->string('his_specialty',15);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

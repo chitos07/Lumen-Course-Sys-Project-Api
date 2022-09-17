@@ -17,7 +17,7 @@ class StudentTest extends TestCase
         $this->json('POST','/api/students/register',['Accept' => 'application/json'])
             ->seeJson([
                 "email"    => ["The email field is required."],
-                "username"     => ["The name field is required."],
+                "username"     => ["The username field is required."],
                 "credit"   => ["The credit field is required."],
                 "password" => ["The password field is required."],
 
@@ -55,11 +55,12 @@ class StudentTest extends TestCase
    public function testUpdateStudent(){
 
        $student = Student::findOrFail(1);
-       $this->actingAs($student);
+       $this->actingAs($student,'student_api');
        $updatedStudent = Student::latest()->first();
+
        $data = [
-           'username' => 'Ahmed2',
-           'email' => 'Ahmed22@yahoo.com',
+           'username' => 'Hossam3',
+           'email' => 'Hossam222@yahoo.com',
            'credit' => 0,
            'password' => 'Ahmed',
            'password_confirmation' => 'Ahmed'
@@ -71,14 +72,14 @@ class StudentTest extends TestCase
 
     public function testsubscriptions(){
         $student = Student::findOrFail(1);
-        $this->actingAs($student);
-        $this->json('GET',"/api/students/subscriptions",['Accept' => 'application/json'])->assertResponseStatus(200);
+        $this->actingAs($student,'student_api');
+        $this->json('GET',"/api/students/1/subscriptions",['Accept' => 'application/json'])->assertResponseStatus(200);
 
     }
 
     public function testSubscribeToCourse(){
         $student = Student::findOrFail(1);
-        $this->actingAs($student);
+        $this->actingAs($student,'student_api');
 
         $data = [
             'studentName' => 'Chitos',
@@ -88,23 +89,18 @@ class StudentTest extends TestCase
             'endDate'  => '2022-10-25',
             'status' => 'on'
         ];
-        $this->json('POST',"/api/students/subscribe",$data,['Accept' => 'application/json'])->assertResponseStatus(201);
+        $this->json('POST',"/api/students/1/subscribe",$data,['Accept' => 'application/json'])->assertResponseStatus(200);
     }
 
 
 
-    public function testUnSubscribe(){
-        $student = Student::findOrFail(1);
-        $this->actingAs($student);
-        $booke = Subscription::latest()->first();
-        $this->json('DELETE',"/api/students/unsubscribe/$booke->id",['Accept' => 'application/json'])->assertResponseStatus(204);
-
-    }
-
-
-
-
-
+//    public function testUnSubscribe(){
+//        $student = Student::findOrFail(1);
+//        $this->actingAs($student,'student_api');
+//        $booke = Subscription::latest()->first();
+//        $this->json('DELETE',"/api/students/$booke->id/unsubscribe",['Accept' => 'application/json'])->assertResponseStatus(204);
+//
+//    }
 
    }
 

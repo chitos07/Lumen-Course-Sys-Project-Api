@@ -3,27 +3,36 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Resources\SubscriptionResource;
-use App\Models\Subscription;
+
+use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class SubscriptionController extends Controller
 {
+    /**
+     * @var SubscriptionService
+     */
+    private $SubscriptionService;
+
+    /**
+     *
+     */
+    public function __construct( SubscriptionService $SubscriptionService)
+    {
+        $this->SubscriptionService = new $SubscriptionService;
+
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function index()
-    {
-        //
-        if(!Auth::user()->can('booking.index')){
-            abort(403);
-        }
-        return  SubscriptionResource::collection(Subscription::paginate(10));
+    public function index(){return $this->SubscriptionService->index();}
 
-    }
     /**
      * Create the specified resource in storage.
      *
@@ -32,81 +41,30 @@ class SubscriptionController extends Controller
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
 
-    public function store(Request $request){
-        $this->validate($request,[
-            'studentName' => ['required','string'],
-            'courseName' => ['required','string'],
-            'price' => ['required','integer'],
-            'startDate' => ['required','date'],
-            'endDate' => ['required','date'],
-            'status' => ['required','string'],
-        ]);
+    public function store(Request $request){return  $this->SubscriptionService->store($request);}
 
-        $booking = new Subscription();
-        $booking->studentName = $request->studentName;
-        $booking->courseName = $request->courseName;
-        $booking->price = $request->price;
-        $booking->startDate = $request->startDate;
-        $booking->endDate = $request->endDate;
-        $booking->status = $request->status;
-
-        if($booking->save()){
-            return new SubscriptionResource($booking);
-        }
-    }
-
-    public function show($id){
-
-        return SubscriptionResource::make(Subscription::findOrFail($id));
-    }
+    /**
+     * Show the specified resource in storage.
+     * @param $id
+     * @return \App\Http\Resources\SubscriptionResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function show($id){return $this->SubscriptionService->show($id);}
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-
+     * @param $id
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function update(Request $request, $id)
-    {
-        if(!Auth::user()->can('booking.update')){
-            abort(403);
-        }
-
-        $this->validate($request,[
-            'studentName' => ['required','string'],
-            'courseName' => ['required','string'],
-            'price' => ['required','integer'],
-            'startDate' => ['required','date'],
-            'endDate' => ['required','date'],
-            'status' => ['required','string'],
-        ]);
-
-        $booking = Subscription::findOrFail($id);
-        $booking->studentName = $request->studentName;
-        $booking->courseName = $request->courseName;
-        $booking->price = $request->price;
-        $booking->startDate = $request->startDate;
-        $booking->endDate = $request->endDate;
-        $booking->status = $request->status;
-
-        if($booking->save()){
-            return new SubscriptionResource($booking);
-        }
-
-    }
+    public function update(Request $request, $id){return $this->SubscriptionService->update($request,$id);}
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
-    {
-        $booking = Subscription::findOrFail($id);
-        if($booking->delete()){
-            return response()->json('',204);
-        }
-    }
+    public function destroy($id){return $this->SubscriptionService->destroy($id);}
 
 }

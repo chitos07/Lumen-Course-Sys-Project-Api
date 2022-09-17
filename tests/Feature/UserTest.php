@@ -11,13 +11,13 @@ class UserTest extends TestCase
 
 
     public function test_required_Fields_forCreateAndUpdate(){
-        $user = \App\Models\User::findOrFail(1);
-        $this->actingAs($user);
+        $user = User::findOrFail(1);
+        $this->actingAs($user,'admin_api');
 
         $this->json('POST','/api/admin/users',['Accept' => 'application/json'])
             ->seeJson([
                 "email"    => ["The email field is required."],
-                "name"     => ["The name field is required."],
+                "username"     => ["The username field is required."],
                 "job_title" => ["The job title field is required."],
                 "password" => ["The password field is required."],
 
@@ -28,10 +28,10 @@ class UserTest extends TestCase
     public function testRepeatPassword()
     {
         $user = \App\Models\User::findOrFail(1);
-        $this->actingAs($user);
+        $this->actingAs($user,'admin_api');
 
         $userData = [
-            "name" => "John Doe",
+            "username" => "John Doe",
             "email" => "doe@example.com",
             "password" => "demo12345",
             "job_title" => "Admin"
@@ -45,7 +45,7 @@ class UserTest extends TestCase
    public function testUserIndex()
    {
     $user = \App\Models\User::findOrFail(1);
-    $this->actingAs($user);
+    $this->actingAs($user,'admin_api');
 
     $this->json('GET','/api/admin/users',['Accept' => 'application/json'])->assertResponseStatus(200);
    }
@@ -53,10 +53,10 @@ class UserTest extends TestCase
 
    public function testCreateUser(){
        $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $this->actingAs($user,'admin_api');
 
        $data = [
-           'name' => 'Ahmed2',
+           'username' => 'Ahmed2',
            'email' => 'Ahmed22@ahmed.com',
            'job_title' => 'engee',
            'password' => 'Ahmed',
@@ -64,25 +64,24 @@ class UserTest extends TestCase
 
        ];
 
-
        $this->json('POST','/api/admin/users',$data,['Accept' => 'application/json'])->assertResponseStatus(201);
    }
 
    public function testShowUser(){
        $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $this->actingAs($user,'admin_api');
        $this->json('GET',"/api/admin/users/$user->id",['Accept' => 'application/json'])->assertResponseStatus(200);
    }
 
 
    public function testUpdateUser(){
        $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $this->actingAs($user,'admin_api');
 
        $updateUser = User::latest()->first();
 
        $data = [
-           'name' => 'Ahmed2',
+           'username' => 'Hossam',
            'email' => 'Ahmed@ahmed.com',
            'job_title' => 'test',
            'password' => 'Ahmed',
@@ -99,38 +98,18 @@ class UserTest extends TestCase
 
 public function testDeleteUser(){
     $user = \App\Models\User::findOrFail(1);
-    $this->actingAs($user);
+    $this->actingAs($user,'admin_api');
 
     $deletedUser = User::latest()->first();
-    $this->json('DELETE',"/api/admin/user/$deletedUser->id",['Accept' => 'application/json'])->assertResponseStatus(204);
+    $this->json('DELETE',"/api/admin/users/$deletedUser->id",['Accept' => 'application/json'])->assertResponseStatus(204);
 }
 
-//public function testStudentIndex()
-//{
-//    $user = \App\Models\User::findOrFail(1);
-//    $this->actingAs($user);
-//    $this->json('GET','/api/admin/student',['Accept' => 'application/json'])->assertResponseStatus(200);
-//}
-
-
-//   public function testShowStudent(){
-//       $user = \App\Models\User::findOrFail(1);
-//       $this->actingAs($user);
-//
-//       $studnet = Student::latest()->first();
-//       $this->json('GET',"/api/admin/student/$studnet->id",['Accept' => 'application/json'])->assertResponseStatus(200);
-//   }
-
-
-
-//public function testDeleteStudent(){
-//    $user = \App\Models\User::findOrFail(1);
-//    $this->actingAs($user);
-//
-//    $deletedStudent = Student::latest()->first();
-//    $this->json('DELETE',"/api/admin/student/$deletedStudent->id",['Accept' => 'application/json'])->assertResponseStatus(204);
-//}
-
+public function testStudentIndex()
+{
+    $user = \App\Models\User::findOrFail(1);
+    $this->actingAs($user,'admin_api');
+    $this->json('GET','/api/admin/students',['Accept' => 'application/json'])->assertResponseStatus(200);
+}
 
    }
 

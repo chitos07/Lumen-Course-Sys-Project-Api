@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\RoleResource;
-use App\Models\Role;
+
+use App\Services\RoleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class RoleController extends Controller
 {
@@ -14,13 +14,9 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function index()
+    public function index(RoleService $service)
     {
-        if(!Auth::user()->can('role.index')){
-            abort(403);
-        }
-
-        return RoleResource::collection(Role::paginate(10));
+        return $service->index();
     }
 
     /**
@@ -29,20 +25,10 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function store(Request $request)
+    public function store(Request $request, RoleService $service)
     {
-        if(!Auth::user()->can('role.store')){
-            abort(403);
-        }
-        $this->validate($request,[
-            'role' => ['required','string']
-        ]);
 
-        $role = new Role();
-        $role->role = $request->role;
-        if($role->save()){
-            return new RoleResource($role);
-        }
+        return   $service->store($request);
 
     }
 
@@ -50,14 +36,13 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param  $id
+     * @param RoleService $service
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function show($id)
+    public function show($id, RoleService $service)
     {
-        if(!Auth::user()->can('role.show')){
-            abort(403);
-        }
-        return RoleResource::make(Role::findOrFail($id));
+
+        return $service->show($id);
     }
 
     /**
@@ -65,34 +50,27 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param    $id
+     * @param  RoleService $service
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, RoleService $service)
     {
-        if(!Auth::user()->can('role.update')){
-            abort(403);
-        }
-        $role = Role::findOrFail($id);
-        $role->role = $request->role;
-        if($role->save()){
-            return new RoleResoure($role);
-        }
+
+         return   $service->update($request,$id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  $id
+     * @param RoleService $service
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(RoleService $service, $id)
     {
-        if(!Auth::user()->can('role.destroy')){
-            abort(403);
-        }
-        $role = Role::findOrFail($id);
-        if($role->delete()){
-            return response()->json('',204);
-        }
+
+        return $service->destroy($id);
     }
+
+
 }

@@ -2,9 +2,6 @@
 namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class RoleTest extends TestCase
@@ -13,14 +10,11 @@ class RoleTest extends TestCase
 
     public function test_required_Fields_forCreateAndUpdate(){
         $user = User::findOrFail(1);
-        $this->actingAs($user);
+        $this->actingAs($user,'admin_api');
 
-        $this->json('POST','/api/admin/role',['Accept' => 'application/json'])
+        $this->json('POST','/api/admin/roles',['Accept' => 'application/json'])
             ->seeJson([
                 "role"  => ["The role field is required."],
-
-
-
             ])->assertResponseStatus(422);
     }
 
@@ -28,43 +22,44 @@ class RoleTest extends TestCase
 
    public function testRoleIndex()
    {
-    $user = \App\Models\User::findOrFail(1);
-    $this->actingAs($user);
+    $user = User::findOrFail(1);
+    $this->actingAs($user,'admin_api');
 
-    $this->json('GET','/api/admin/role',['Accept' => 'application/json'])->assertResponseStatus(200);
+    $this->json('GET','/api/admin/roles',['Accept' => 'application/json'])->assertResponseStatus(200);
    }
 
 
+
    public function testCreateRole(){
-       $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $user = User::findOrFail(1);
+       $this->actingAs($user,'admin_api');
 
        $data = [
            'role' => 'test.test',
 
        ];
 
-       $this->json('POST','/api/admin/role',$data,['Accept' => 'application/json'])->assertResponseStatus(201);
+       $this->json('POST','/api/admin/roles',$data,['Accept' => 'application/json'])->assertResponseStatus(201);
    }
 
-   public function testShowUser(){
+   public function testShowRole(){
        $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $this->actingAs($user,'admin_api');
 
-       $this->json('GET',"/api/admin/role/$user->id",['Accept' => 'application/json'])->assertResponseStatus(200);
+       $this->json('GET',"/api/admin/roles/1",['Accept' => 'application/json'])->assertResponseStatus(200);
    }
 
 
    public function testUpdateRole(){
        $user = \App\Models\User::findOrFail(1);
-       $this->actingAs($user);
+       $this->actingAs($user,'admin_api');
 
        $updatedrole = Role::latest('id')->first();
        $data = [
            'role' => 'test.test2',
 
        ];
-       $this->json('PUT',"/api/admin/role/$updatedrole->id",$data,['Accept' => 'application/json'])->assertResponseStatus(200);
+       $this->json('PUT',"/api/admin/roles/$updatedrole->id",$data,['Accept' => 'application/json'])->assertResponseStatus(200);
 
    }
 
@@ -73,11 +68,11 @@ class RoleTest extends TestCase
 
 public function testDeleteUser(){
     $user = \App\Models\User::findOrFail(1);
-    $this->actingAs($user);
+    $this->actingAs($user,'admin_api');
 
     $deletedRole = Role::latest('id')->first();
 
-    $this->json('DELETE',"/api/admin/role/$deletedRole->id",['Accept' => 'application/json'])->assertResponseStatus(204);
+    $this->json('DELETE',"/api/admin/roles/$deletedRole->id",['Accept' => 'application/json'])->assertResponseStatus(204);
 }
 
 

@@ -9,7 +9,7 @@ class AuthenticationTest extends TestCase
 {
 
     public function test_required_Fields_for_login(){
-        $this->json('POST','/api/admin/login',['Accept' => 'application/json'])
+        $this->json('POST','/api/admins/login',['Accept' => 'application/json'])
             ->seeJson([
                 "email"    => ["The email field is required."],
                 "password" => ["The password field is required."],
@@ -23,12 +23,12 @@ class AuthenticationTest extends TestCase
     public function test_admin_login()
     {
 
-       $this->json('POST','/api/admin/login',['email' => 'admin@admin.com','password' => 'admin'])->assertResponseStatus(200);
+       $this->json('POST','/api/admins/login',['email' => 'admin@admin.com','password' => 'admin'])->assertResponseStatus(200);
 
     }
 
     public function test_required_Fields_for_student_login(){
-        $this->json('POST','/api/student/login',['Accept' => 'application/json'])
+        $this->json('POST','/api/students/login',['Accept' => 'application/json'])
             ->seeJson([
                 "email"    => ["The email field is required."],
                 "password" => ["The password field is required."],
@@ -42,7 +42,7 @@ class AuthenticationTest extends TestCase
     public function test_student_login()
     {
 
-        $this->json('POST','/api/student/login',['email' => 'Chitos@admin.com','password' => 'Chitos'])->assertResponseStatus(200);
+        $this->json('POST','/api/students/login',['email' => 'Ahmed@ahmed.com','password' => 'Ahmed'])->assertResponseStatus(200);
 
     }
 }

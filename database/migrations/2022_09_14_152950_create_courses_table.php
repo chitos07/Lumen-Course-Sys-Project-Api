@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('price');
             $table->date('start_date');
             $table->date('end_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

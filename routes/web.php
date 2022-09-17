@@ -15,10 +15,10 @@
 
 
 $router->group(['prefix' => 'api'],function () use($router){
-    $router->post('admin/login','Auth\AdminAuthController@login');
+    $router->post('admins/login','Auth\AdminAuthController@login');
 
     $router->group(['prefix' => 'admin', 'middleware' => 'auth:admin_api'],function ($router){
-        $router->post('user/logout', 'Auth\AdminAuthController@logout');
+        $router->post('/logout', 'Auth\AdminAuthController@logout');
 
         // Users Route
         $router->get('/users','UserController@index');
@@ -57,6 +57,9 @@ $router->group(['prefix' => 'api'],function () use($router){
         $router->put('/subscriptions/{id}','SubscriptionController@update');
         $router->delete('/subscriptions/{id}','SubscriptionController@destroy');
 
+        // Student Route
+        $router->get('/students','StudentController@index');
+
     });
 
 
@@ -68,6 +71,7 @@ $router->group(['prefix' => 'api'],function () use($router){
         $router->group(['middleware' => 'auth:student_api'], function ($router){
             $router->put('{id}','StudentController@update');
             $router->get('/{id}/subscriptions','StudentController@subscriptions');
+            $router->get('/{id}','StudentController@show');
             $router->post('/{id}/subscribe', 'StudentController@course_subscribe');
             $router->delete('/{id}/unsubscribe' , 'StudentController@unsubscribe');
         });

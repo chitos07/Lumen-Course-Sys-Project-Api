@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         $roles  = Role::all();
 
         $admin = User::create([
-            'name' => 'admin',
+            'username' => 'admin',
             'email' => 'admin@admin.com',
             'job_title' => 'Admin',
             'password' => Hash::make('admin'),
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         $admin->roles()->attach($roles);
 
         $TestUser = User::create([
-            'name' => 'UserTest',
+            'username' => 'UserTest',
             'email' => 'UserTest@Test.com',
             'job_title' => 'Test',
             'password' => Hash::make('test'),
