@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CourseServie;
+use App\Services\CrudOperation;
 use Illuminate\Http\Request;
 
 
@@ -14,9 +15,10 @@ class CourseController extends Controller
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
 
-    public function index(CourseServie $courseServie)
+    public function index()
     {
-        return $courseServie->index();
+        $CurdOperation = new CrudOperation(new CourseServie());
+        return $CurdOperation->index();
     }
 
     /**
@@ -27,9 +29,10 @@ class CourseController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function store(Request $request, CourseServie $courseServie)
+    public function store(Request $request)
     {
-        return $courseServie->store($request);
+        $CurdOperation = new CrudOperation(new CourseServie());
+        return $CurdOperation->store($request);
     }
 
     /**
@@ -40,9 +43,10 @@ class CourseController extends Controller
      * @return\Illuminate\Http\Resources\Json\JsonResource
      */
 
-    public function show($id, CourseServie $courseServie)
+    public function show($id)
     {
-        return  $courseServie->show($id);
+        $CurdOperation = new CrudOperation(new CourseServie());
+        return  $CurdOperation->show($id);
     }
 
     /**
@@ -54,9 +58,10 @@ class CourseController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function update(Request $request,$id, CourseServie $courseServie)
+    public function update(Request $request,$id)
     {
-        return $courseServie->update($request,$id);
+        $CurdOperation = new CrudOperation(new CourseServie());
+        return $CurdOperation->update($request,$id);
     }
 
     /**
@@ -67,9 +72,10 @@ class CourseController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function destroy($id, CourseServie $courseServie)
+    public function destroy($id)
     {
-        return $courseServie->destroy($id);
+        $CurdOperation = new CrudOperation(new CourseServie());
+        return $CurdOperation->destroy($id);
     }
 
 

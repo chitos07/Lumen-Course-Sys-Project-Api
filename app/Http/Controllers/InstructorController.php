@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Services\CrudOperation;
 use App\Services\InstructorService;
 use Illuminate\Http\Request;
 
@@ -12,14 +13,12 @@ class InstructorController extends Controller
     /**
      * @var InstructorService
      */
-    private $InstructorService;
+    private $InstructorOperation;
 
-    /**
-     * @param InstructorService $InstructorService
-     */
-    public function __construct(InstructorService $InstructorService)
+
+    public function __construct()
     {
-        $this->InstructorService = $InstructorService;
+        $this->InstructorService = new CrudOperation(new InstructorService());
     }
 
 

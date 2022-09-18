@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\Services\CrudOperation;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,10 @@ class SubscriptionController extends Controller
      */
     private $SubscriptionService;
 
-    /**
-     *
-     */
-    public function __construct( SubscriptionService $SubscriptionService)
-    {
-        $this->SubscriptionService = new $SubscriptionService;
 
+    public function __construct()
+    {
+        $this->SubscriptionService =  new CrudOperation(new SubscriptionService());
 
     }
 

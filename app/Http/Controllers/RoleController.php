@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 
+use App\Services\CrudOperation;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
 
 
 class RoleController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function index(RoleService $service)
+    public function index()
     {
-        return $service->index();
+        $CurdOp = new CrudOperation(new RoleService());
+        return $CurdOp->index();
     }
 
     /**
@@ -25,10 +28,11 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function store(Request $request, RoleService $service)
+    public function store(Request $request)
     {
 
-        return   $service->store($request);
+        $CurdOp = new CrudOperation(new RoleService());
+        return   $CurdOp->store($request);
 
     }
 
@@ -36,13 +40,13 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param  $id
-     * @param RoleService $service
+     *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function show($id, RoleService $service)
+    public function show($id)
     {
-
-        return $service->show($id);
+        $CurdOp = new CrudOperation(new RoleService());
+        return $CurdOp->show($id);
     }
 
     /**
@@ -50,26 +54,24 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param    $id
-     * @param  RoleService $service
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function update(Request $request, $id, RoleService $service)
+    public function update(Request $request, $id)
     {
-
-         return   $service->update($request,$id);
+        $CurdOp = new CrudOperation(new RoleService());
+         return   $CurdOp->update($request,$id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  $id
-     * @param RoleService $service
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(RoleService $service, $id)
+    public function destroy( $id)
     {
-
-        return $service->destroy($id);
+        $CurdOp = new CrudOperation(new RoleService());
+        return $CurdOp->destroy($id);
     }
 
 

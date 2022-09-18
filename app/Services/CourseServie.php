@@ -60,6 +60,7 @@ class CourseServie implements CRUD
     public function destroy($id)
     {
         if(!Auth::user()->can('course.destroy')){throw new AuthorizationException();}
+        $this->CheckRole('course.destriy');
         $course = Course::findOrFail($id);
         if($course->delete()){
             return response()->json('',204);
@@ -82,6 +83,10 @@ class CourseServie implements CRUD
             'start_date' => ['required','date'],
             'end_date' => ['required','date'],
         ]);
+    }
+
+    public function CheckRole(string $role){
+        if(!Auth::user()->can($role)){throw new AuthorizationException();}
     }
 
 }

@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
+
+use App\Services\CrudOperation;
 use App\Services\UserService;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -17,12 +15,10 @@ class UserController extends Controller
      */
     private $UserService;
 
-    /**
-     * @param UserService $UserService
-     */
-    public function __construct(UserService $UserService)
+
+    public function __construct()
     {
-        $this->UserService = $UserService;
+        $this->UserService = new CrudOperation(new UserService());;
     }
 
 

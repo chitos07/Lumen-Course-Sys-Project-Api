@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Services\CrudOperation;
 use App\Services\StudentService;
 use Illuminate\Http\Request;
 
@@ -14,12 +15,10 @@ class StudentController extends Controller
      */
     private $StudentService;
 
-    /**
-     * @param StudentService $StudentService
-     */
-    public function __construct(StudentService $StudentService)
+
+    public function __construct()
     {
-        $this->StudentService = $StudentService;
+        $this->StudentService = new CrudOperation(new StudentService());
     }
 
 
