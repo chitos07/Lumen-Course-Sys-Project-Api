@@ -76,6 +76,7 @@ class StudentService implements CRUD
 
         return  $student->subscriptions();
     }
+
     public function unsubscribe($id){
         $Subscription = Subscription::findOrFail($id);
         if($Subscription->delete()){

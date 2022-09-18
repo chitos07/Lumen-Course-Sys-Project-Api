@@ -17,7 +17,8 @@ class CrudOperation
      */
     public function __construct(CRUD $crudInterface)
     {
-        $this->crudInterface = $crudInterface;
+        $this->setCrudInterface($crudInterface);
+        //$this->crudInterface = $crudInterface;
     }
 
     public function index(){
@@ -42,16 +43,20 @@ class CrudOperation
         return $this->crudInterface->destroy($id);
     }
 
-    public function course_subscribe($id){
-        return $this->crudInterface->course_subscribe( $id);
-    }
-    public function subscriptions($id){
-        return $this->crudInterface->subscriptions($id);
+    /**
+     * @return CRUD
+     */
+    public function getCrudInterface(): CRUD
+    {
+        return $this->crudInterface;
     }
 
-    public function unsubscribe($id)
+    /**
+     * @param CRUD $crudInterface
+     */
+    public function setCrudInterface(CRUD $crudInterface): void
     {
-        return $this->crudInterface->unsubscribe($id);
+        $this->crudInterface = $crudInterface;
     }
 
 }

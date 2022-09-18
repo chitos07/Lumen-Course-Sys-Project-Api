@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Services\CrudOperation;
 use App\Services\StudentService;
 use Illuminate\Http\Request;
-
 
 class StudentController extends Controller
 {
@@ -58,19 +56,28 @@ class StudentController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function course_subscribe($id){return $this->StudentService->course_subscribe($id);}
+    public function course_subscribe($id){
+        return $this->StudentService->getCrudInterface()->course_subscribe($id);
+
+    }
 
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function subscriptions($id){return $this->StudentService->subscriptions($id);}
+    public function subscriptions($id){
+
+        return $this->StudentService->getCrudInterface()->subscriptions($id);
+    }
 
     /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse|null
      */
-    public function unsubscribe($id){return $this->StudentService->unsubscribe($id);}
+    public function unsubscribe($id){
+
+        return $this->StudentService->getCrudInterface()->unsubscribe($id);
+    }
 
 
 }
